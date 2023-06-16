@@ -1,0 +1,32 @@
+---
+title: Posit Environment Installation Checklist
+format: PositQuarto-pdf
+---
+
+```{r}
+#| echo: false
+#| output: false
+
+library(readr)
+library(dplyr)
+library(gt)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+checklist <- read_csv("install_checklist.csv")
+
+checklist %>% 
+  select(Category, Step, Description, Resources) %>% 
+  group_by(Category) %>% 
+gt() %>% 
+  sub_missing(columns= c(Description, Resources), rows=everything(),
+              missing_text = "") %>%
+  fmt_markdown(columns=Resources) %>%
+  cols_width(Step ~ pct(20),
+             Description ~ pct(60),
+             Resources ~ pct(20)) %>%
+  tab_style(style = list(cell_text(weight="bold", align="center")),
+            locations = cells_row_groups())
+```
